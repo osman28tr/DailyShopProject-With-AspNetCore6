@@ -14,15 +14,8 @@ namespace DailyShop.API.Controllers
         [HttpGet("GetList")]
         public async Task<IActionResult> GetList()
         {
-            List<GetListCategoryDto> getListCategoryDtos = new List<GetListCategoryDto>();
-            var result = await Mediator.Send(new GetListCategoryQuery());
-            for (int i = 0; i < result.Count; i++)
-            {
-                if (result[i].ParentCategoryId == null)
-                {
-                    getListCategoryDtos.Add(result[i]);
-                }
-            }
+	        var result = await Mediator?.Send(new GetListCategoryQuery())!;
+            var getListCategoryDtos = result.Where(t => t.ParentCategoryId == null).ToList();
             return Ok(getListCategoryDtos);
         }
     }
